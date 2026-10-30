@@ -1,0 +1,76 @@
+cost (s): alpha 0.00084 beta 0.000124 gamma 0.0000237 | seeds 3 | arrivals for 40s
+
+LOAD relative to STATIC's saturated capacity (both schedulers stable)
+rho                        scheduler   ttft_p50   ttft_p99   e2e_p99    itl_p99    waste_frac 
+0.3                        static      0.010      0.361      0.731      1.3 ms     11.0%      
+0.3                        continuous  0.006      0.017      0.474      1.2 ms     0.0%       
+0.6                        static      0.079      0.971      1.365      2.2 ms     35.0%      
+0.6                        continuous  0.007      0.018      0.703      2.2 ms     0.0%       
+0.9                        static      0.207      1.606      2.166      3.3 ms     55.2%      
+0.9                        continuous  0.007      0.019      0.712      4.9 ms     0.0%       
+
+LOAD relative to CONTINUOUS saturated capacity (static is overloaded wherever its TTFT keeps growing)
+rho                        scheduler   ttft_p50   ttft_p99   e2e_p99    itl_p99    waste_frac 
+0.3                        static      0.508      3.103      3.896      4.4 ms     61.5%      
+0.3                        continuous  0.007      0.020      0.797      5.6 ms     0.0%       
+0.3                        chunked512  0.007      0.022      0.797      5.7 ms     0.0%       
+0.5                        static      14.989     28.125     28.740     4.8 ms     75.7%      
+0.5                        continuous  0.008      0.024      1.114      8.7 ms     0.0%       
+0.5                        chunked512  0.008      0.026      1.114      8.9 ms     0.0%       
+0.7                        static      25.418     51.166     51.959     4.8 ms     75.1%      
+0.7                        continuous  0.009      0.028      1.667      11.7 ms    0.0%       
+0.7                        chunked512  0.009      0.029      1.668      11.9 ms    0.0%       
+0.85                       static      42.820     77.202     77.807     4.8 ms     76.4%      
+0.85                       continuous  0.012      0.210      2.795      15.4 ms    0.0%       
+0.85                       chunked512  0.012      0.211      2.793      14.8 ms    0.0%       
+0.95                       static      51.818     90.934     91.348     4.8 ms     76.2%      
+0.95                       continuous  0.300      0.761      3.823      17.7 ms    0.0%       
+0.95                       chunked512  0.301      0.762      3.822      15.8 ms    0.0%       
+
+SATURATED CAPACITY (tokens/s), static vs continuous, by output-length CV:
+  cv 0.00  static  5067  continuous  5074  ratio 1.00
+  cv 0.25  static  3470  continuous  5070  ratio 0.68
+  cv 0.50  static  2459  continuous  5063  ratio 0.49
+  cv 1.00  static  1509  continuous  5029  ratio 0.30
+  cv 2.00  static  1080  continuous  4916  ratio 0.22
+SATURATED CAPACITY by cost-model shape:
+  measured (beta/alpha=0.15)   static  1509  continuous  5029  ratio 0.30
+  beta/alpha=0.01              static  5278  continuous 11951  ratio 0.44
+  beta/alpha=0.05              static  3070  continuous  8558  ratio 0.36
+  beta/alpha=0.50              static   538  continuous  2040  ratio 0.26
+  beta/alpha=1.00              static   281  continuous  1105  ratio 0.25
+  gpu-like (assumed)           static   249  continuous   862  ratio 0.29
+
+OUTPUT-LENGTH VARIABILITY (CV of output length), rho 0.6
+out_cv                     scheduler   ttft_p99   e2e_p99    waste_frac 
+0.0                        static      0.395      0.702      0.0%       
+0.0                        continuous  0.027      0.529      0.0%       
+0.5                        static      9.490      10.039     56.9%      
+0.5                        continuous  0.026      0.849      0.0%       
+1.0                        static      36.519     36.968     74.5%      
+1.0                        continuous  0.025      1.249      0.0%       
+2.0                        static      63.724     64.190     83.1%      
+2.0                        continuous  0.023      1.676      0.0%       
+
+LONG PROMPTS (5% of prompts are 4096 tokens), rho 0.6
+sched                      scheduler   ttft_p99   e2e_p99    itl_p99    itl_p999   itl_max    
+continuous                 continuous  0.137      1.380      10.4 ms    99.0 ms    121.2 ms   
+chunked256                 chunked256  0.160      1.395      8.2 ms     8.8 ms     8.9 ms     
+chunked512                 chunked512  0.136      1.387      13.7 ms    14.5 ms    15.0 ms    
+chunked1024                chunked1024 0.136      1.384      19.5 ms    26.3 ms    26.6 ms    
+chunked2048                chunked2048 0.147      1.381      11.6 ms    50.4 ms    50.9 ms    
+
+COST-MODEL SHAPE, rho 0.6 (rho is relative to continuous capacity under each shape)
+shape                      scheduler   ttft_p99   e2e_p99    waste_frac 
+measured (beta/alpha=0.15) static      36.519     36.968     74.5%      
+measured (beta/alpha=0.15) continuous  0.025      1.249      0.0%       
+beta/alpha=0.01            static      15.825     15.938     75.9%      
+beta/alpha=0.01            continuous  0.033      0.900      0.0%       
+beta/alpha=0.05            static      30.556     30.845     76.7%      
+beta/alpha=0.05            continuous  0.029      1.125      0.0%       
+beta/alpha=0.50            static      46.097     47.795     75.5%      
+beta/alpha=0.50            continuous  0.022      1.518      0.0%       
+beta/alpha=1.00            static      38.855     44.287     72.1%      
+beta/alpha=1.00            continuous  0.023      2.337      0.0%       
+gpu-like (assumed)         static      42.405     48.393     74.8%      
+gpu-like (assumed)         continuous  0.136      18.053     0.0%       

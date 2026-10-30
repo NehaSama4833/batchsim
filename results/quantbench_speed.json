@@ -1,0 +1,50 @@
+{
+ "source": "quantbench results/experiment.json (fp32, KV-cache decode, prompt 64 tokens; 2-vCPU sandbox)",
+ "speed": [
+  {
+   "batch": 1,
+   "cache": true,
+   "tok_per_s": 1046.427913673718,
+   "step_ms": 0.9556320000001506,
+   "min_s": 0.05991497500008336,
+   "max_s": 0.0631255019998207,
+   "prefill_ms": 2.891401999931986
+  },
+  {
+   "batch": 4,
+   "cache": true,
+   "tok_per_s": 2984.6177812764695,
+   "step_ms": 1.3402051093756029,
+   "min_s": 0.08471543199993903,
+   "max_s": 0.08996380000007775,
+   "prefill_ms": 8.382514999993873
+  },
+  {
+   "batch": 16,
+   "cache": true,
+   "tok_per_s": 5661.014712897622,
+   "step_ms": 2.826348421873348,
+   "min_s": 0.17548914299982243,
+   "max_s": 0.19714085999999043,
+   "prefill_ms": 24.719551000089268
+  },
+  {
+   "batch": 1,
+   "cache": false,
+   "tok_per_s": 273.75690901496625,
+   "step_ms": 3.6528758437484043,
+   "min_s": 0.10695048399998086,
+   "max_s": 0.11819159799983936,
+   "prefill_ms": 0.0
+  },
+  {
+   "batch": 4,
+   "cache": false,
+   "tok_per_s": 427.19546345094886,
+   "step_ms": 9.363395312504963,
+   "min_s": 0.28719374899992545,
+   "max_s": 0.30808857399983935,
+   "prefill_ms": 0.0
+  }
+ ]
+}
